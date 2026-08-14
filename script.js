@@ -1,87 +1,144 @@
-const videos = [
-  {
-    title: "Let's Have a Look at Our Relationship ❤️",
-    src: "videos/video1.mp4"
-  },
-  {
-    title: "Another Little Memory 🥹",
-    src: "videos/video2.mp4"
-  },
-  {
-    title: "Us ❤️",
-    src: "videos/video3.mp4"
-  }
-];
+const disc = document.getElementById("disc");
+const slot = document.getElementById("slot");
 
+const welcomeScreen = document.getElementById("welcomeScreen");
+const menuScreen = document.getElementById("menuScreen");
 const videoPlayer = document.getElementById("videoPlayer");
-const videoTitle = document.getElementById("videoTitle");
 const videoList = document.getElementById("videoList");
-const welcome = document.getElementById("welcome");
 
 const playBtn = document.getElementById("playBtn");
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
+const ejectBtn = document.getElementById("ejectBtn");
 
+const display = document.getElementById("display");
+
+const videos = [
+  {
+    title: "Memory 01 ❤️",
+    src: "videos/video1.mp4"
+  },
+  {
+    title: "Memory 02 🥹",
+    src: "videos/video2.mp4"
+  },
+  {
+    title: "Memory 03 ❤️",
+    src: "videos/video3.mp4"
+  }
+];
+
+let discInserted = false;
 let currentVideo = 0;
 
-function loadVideo(index) {
-  currentVideo = index;
 
-  videoPlayer.src = videos[index].src;
-  videoTitle.textContent = videos[index].title;
+/* -----------------------------
+   DRAG DISC
+----------------------------- */
 
-  welcome.style.display = "none";
-  videoPlayer.style.display = "block";
+disc.addEventListener("dragstart", (event) => {
+  if (discInserted) return;
 
-  document.querySelectorAll(".video-item").forEach((item, i) => {
-    item.classList.toggle("active", i === index);
-  });
-
-  videoPlayer.load();
-}
-
-videos.forEach((video, index) => {
-  const button = document.createElement("button");
-
-  button.className = "video-item";
-  button.textContent = video.title;
-
-  button.addEventListener("click", () => {
-    loadVideo(index);
-  });
-
-  videoList.appendChild(button);
+  event.dataTransfer.setData("text/plain", "disc");
+  display.textContent = "INSERT DISC";
 });
 
-playBtn.addEventListener("click", () => {
-  if (!videoPlayer.src) return;
+slot.addEventListener("dragover", (event) => {
+  event.preventDefault();
 
-  if (videoPlayer.paused) {
-    videoPlayer.play();
-    playBtn.textContent = "⏸";
-  } else {
-    videoPlayer.pause();
-    playBtn.textContent = "▶";
+  if (!discInserted) {
+    slot.classList.add("over");
   }
 });
 
-prevBtn.addEventListener("click", () => {
-  const previous =
-    (currentVideo - 1 + videos.length) % videos.length;
-
-  loadVideo(previous);
+slot.addEventListener("dragleave", () => {
+  slot.classList.remove("over");
 });
 
-nextBtn.addEventListener("click", () => {
-  const next =
-    (currentVideo + 1) % videos.length;
+slot.addEventListener("drop", (event) => {
+  event.preventDefault();
 
-  loadVideo(next);
+  slot.classList.remove("over");
+
+  if (discInserted) return;
+
+  insertDisc();
 });
 
-videoPlayer.addEventListener("ended", () => {
-  const next =
-    (currentVideo + 1) % videos.length;
 
-  loadVideo(next);
+/* -----------------------------
+   MOBILE / TOUCH DISC INSERT
+----------------------------- */
+
+disc.addEventListener("click", () => {
+  if (!discInserted) {
+    insertDisc();
+  }
 });
+
+
+/* -----------------------------
+   INSERT DISC
+----------------------------- */
+
+function insertDisc() {
+  discInserted = true;
+
+  disc.classList.add("inserted");
+
+  slot.textContent = "DISC INSERTED";
+
+  display.textContent = "READING DISC...";
+
+  setTimeout(() => {
+    welcomeScreen.style.display = "none";
+    menuScreen.style.display = "flex";
+
+    display.textContent = "NAVI × KRISH — READY";
+
+    createVideoButtons();
+  }, 1200);
+}
+
+
+/* -----------------------------
+   CREATE VIDEO MENU
+----------------------------- */
+
+function createVideoButtons() {
+  videoList.innerHTML = "";
+
+  videos.forEach((video, index) => {
+    const button = document.createElement("button");
+
+    button.className = "video-item";
+    button.textContent = video.title;
+
+    button.addEventListener("click", () => {
+      loadVideo(index);
+    });
+
+    videoList.appendChild(button);
+  });
+}
+
+
+/* -----------------------------
+   LOAD VIDEO
+----------------------------- */
+
+function loadVideo(index) {
+  if (!discInserted) return;
+
+  currentVideo = index;
+
+  menuScreen.style.display = "none";
+  videoPlayer.style.display = "block";
+
+  videoPlayer.src = videos[index].src;
+  videoPlayer.load();
+
+  display.textContent = videos[index].title;
+
+  document.querySelectorAll(".video-item").forEach((button, i) => {
+    button.classList
