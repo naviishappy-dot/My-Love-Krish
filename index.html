@@ -44,26 +44,44 @@
 
   <section id="page2" class="page">
 
-    <div class="photo-placeholder">
+  <div
+    style="
+      width: min(88vw, 420px);
+      max-height: 60vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      margin: 0 auto 25px;
+    "
+  >
 
-      <img
-        src="couple.jpg"
-        alt="Our picture"
-      >
-
-    </div>
-
-
-    <button
-      id="welcomeBtn"
-      type="button"
-      onclick="
-        document.getElementById('page2').classList.remove('active');
-        document.getElementById('page3').classList.add('active');
+    <img
+      src="couple.jpg"
+      alt="Our picture"
+      style="
+        display: block;
+        width: 100%;
+        height: auto;
+        max-height: 60vh;
+        object-fit: contain;
+        object-position: center;
       "
     >
-      Welcome my love
-    </button>
+
+  </div>
+
+
+  <button
+    id="welcomeBtn"
+    type="button"
+    onclick="
+      document.getElementById('page2').classList.remove('active');
+      document.getElementById('page3').classList.add('active');
+    "
+  >
+    Welcome my love
+  </button>
 
   </section>
 
