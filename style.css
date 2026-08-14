@@ -419,3 +419,28 @@ body {
     height: 55px;
   }
   }
+.dvd-player {
+  display: block !important;
+  position: relative !important;
+}
+
+.dvd-screen {
+  display: block !important;
+  position: relative !important;
+}
+
+.discs {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  z-index: 20 !important;
+}
+
+.dvd {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  z-index: 30 !important;
+  }
