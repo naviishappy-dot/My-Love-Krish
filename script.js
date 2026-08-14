@@ -23,7 +23,7 @@ const ejectBtn = document.getElementById("ejectBtn");
 
 const videos = [
   "video1.mp4",
-  "video2.mp4",
+  "VID_20260814_150026_664.mp4",
   "video3.mp4",
   "video4.mp4"
 ];
