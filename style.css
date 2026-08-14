@@ -444,3 +444,11 @@ body {
   position: relative !important;
   z-index: 30 !important;
   }
+.disc-tray.disc-loading {
+  border-color: #e7a5b8;
+  box-shadow: 0 0 18px rgba(231, 165, 184, 0.45);
+  }
+
+.disc-tray.disc-loading .disc-slot {
+  background: #17100b;
+  }
