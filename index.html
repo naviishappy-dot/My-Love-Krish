@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>For Krish ❤️</title>
 
   <link rel="stylesheet" href="style.css">
@@ -10,7 +12,10 @@
 
 <body>
 
-  <!-- PAGE 1 -->
+  <!-- =========================
+       PAGE 1
+  ========================== -->
+
   <section id="page1" class="page active">
 
     <div class="heart">♡</div>
@@ -19,28 +24,48 @@
 
     <p>I love you</p>
 
-    <button id="relationshipBtn">
+    <button
+      id="relationshipBtn"
+      type="button"
+      onclick="
+        document.getElementById('page1').classList.remove('active');
+        document.getElementById('page2').classList.add('active');
+      "
+    >
       Let's have a look on our relationship
     </button>
 
   </section>
 
 
-  <!-- PAGE 2 -->
+  <!-- =========================
+       PAGE 2
+  ========================== -->
+
   <section id="page2" class="page">
 
     <div class="photo-placeholder">
       Our picture will be here ❤️
     </div>
 
-    <button id="welcomeBtn">
+    <button
+      id="welcomeBtn"
+      type="button"
+      onclick="
+        document.getElementById('page2').classList.remove('active');
+        document.getElementById('page3').classList.add('active');
+      "
+    >
       Welcome my love
     </button>
 
   </section>
 
 
-  <!-- PAGE 3 -->
+  <!-- =========================
+       PAGE 3
+  ========================== -->
+
   <section id="page3" class="page">
 
     <h2>Our Little Memories 💿</h2>
@@ -48,9 +73,14 @@
     <p>Drag a DVD into the player</p>
 
 
-    <!-- WOODEN DVD PLAYER -->
+    <!-- =========================
+         WOODEN DVD PLAYER
+    ========================== -->
 
     <div class="dvd-player">
+
+
+      <!-- PLAYER TOP -->
 
       <div class="player-top">
 
@@ -58,12 +88,17 @@
           Navi ❤️ Krish
         </div>
 
-        <div id="playerLight" class="player-light"></div>
+        <div
+          id="playerLight"
+          class="player-light">
+        </div>
 
       </div>
 
 
-      <!-- SCREEN -->
+      <!-- =========================
+           SCREEN
+      ========================== -->
 
       <div class="dvd-screen">
 
@@ -79,6 +114,7 @@
 
         </div>
 
+
         <video
           id="videoPlayer"
           controls
@@ -88,51 +124,73 @@
       </div>
 
 
-      <!-- CONTROLS -->
+      <!-- =========================
+           CONTROLS
+      ========================== -->
 
       <div class="player-controls">
 
-        <button id="prevBtn">
+        <button
+          id="prevBtn"
+          type="button">
           ⏮
         </button>
 
-        <button id="playBtn">
+        <button
+          id="playBtn"
+          type="button">
           ▶
         </button>
 
-        <button id="nextBtn">
+        <button
+          id="nextBtn"
+          type="button">
           ⏭
         </button>
 
-        <button id="ejectBtn">
+        <button
+          id="ejectBtn"
+          type="button">
           ⏏
         </button>
 
       </div>
 
 
-      <!-- DISC TRAY -->
+      <!-- =========================
+           DVD TRAY
+      ========================== -->
 
-<div class="disc-tray" id="discTray">
+      <div
+        class="disc-tray"
+        id="discTray">
 
-  <div class="tray-door"></div>
+        <div class="tray-door"></div>
 
-  <div class="tray-inside">
+        <div class="tray-inside">
 
-    <div class="disc-slot"></div>
+          <div class="disc-slot"></div>
 
-    <div
-      id="discInPlayer"
-      class="disc-in-player">
+          <div
+            id="discInPlayer"
+            class="disc-in-player">
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
 
-  </div>
 
-</div>
-
-    <!-- DVDS -->
+    <!-- =========================
+         DVDS
+    ========================== -->
 
     <div class="discs">
+
+
+      <!-- DVD 1 -->
 
       <div
         class="dvd"
@@ -140,13 +198,16 @@
         draggable="true">
 
         <div class="dvd-label">
-          Our<br>Story
+          Our<br>
+          Story
         </div>
 
         <div class="dvd-hole"></div>
 
       </div>
 
+
+      <!-- DVD 2 -->
 
       <div
         class="dvd"
@@ -154,13 +215,16 @@
         draggable="true">
 
         <div class="dvd-label">
-          Memory<br>02
+          Memory<br>
+          02
         </div>
 
         <div class="dvd-hole"></div>
 
       </div>
 
+
+      <!-- DVD 3 -->
 
       <div
         class="dvd"
@@ -168,7 +232,8 @@
         draggable="true">
 
         <div class="dvd-label">
-          Memory<br>03
+          Memory<br>
+          03
         </div>
 
         <div class="dvd-hole"></div>
@@ -176,13 +241,16 @@
       </div>
 
 
+      <!-- DVD 4 -->
+
       <div
         class="dvd"
         data-video="3"
         draggable="true">
 
         <div class="dvd-label">
-          Memory<br>04
+          Memory<br>
+          04
         </div>
 
         <div class="dvd-hole"></div>
@@ -194,7 +262,10 @@
   </section>
 
 
+  <!-- JAVASCRIPT -->
+
   <script src="script.js"></script>
 
 </body>
+
 </html>
