@@ -3,31 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Love, Krish ❤️</title>
+  <title>Navi ❤️ Krish</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <div class="container">
+  <div class="dvd-player">
 
-    <h1>My Love, Krish ❤️</h1>
-    <p class="subtitle">A little piece of my heart, just for you.</p>
+    <div class="screen">
+      <video id="videoPlayer" controls playsinline>
+        <source src="" type="video/mp4">
+        Your browser does not support video playback.
+      </video>
 
-    <div class="record-player">
-      <div class="record">
-        <div class="label">K ❤️ N</div>
-        <div class="center-hole"></div>
+      <div id="welcome">
+        <h1>Navi ❤️ Krish</h1>
+        <p>Our little collection of memories</p>
+        <p>Choose a video below ✨</p>
       </div>
-
-      <div class="tonearm"></div>
     </div>
 
-    <button id="playBtn">▶ Play Our Song</button>
+    <div class="player-controls">
+      <button id="prevBtn">⏮</button>
+      <button id="playBtn">▶</button>
+      <button id="nextBtn">⏭</button>
+    </div>
 
-    <p id="message">
-      Every little moment with you means more than you know. ❤️
-    </p>
+    <div class="video-title" id="videoTitle">
+      Select a memory ❤️
+    </div>
+
+    <div class="video-list" id="videoList"></div>
 
   </div>
 
