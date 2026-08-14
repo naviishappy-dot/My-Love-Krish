@@ -11,30 +11,49 @@
 
   <div class="dvd-player">
 
-    <div class="screen">
-      <video id="videoPlayer" controls playsinline>
-        <source src="" type="video/mp4">
-        Your browser does not support video playback.
-      </video>
+    <div class="dvd-top">
+      <div class="brand">NAVI × KRISH</div>
+      <div class="power-light"></div>
+    </div>
 
-      <div id="welcome">
-        <h1>Navi ❤️ Krish</h1>
-        <p>Our little collection of memories</p>
-        <p>Choose a video below ✨</p>
+    <div class="screen">
+      <div id="welcomeScreen">
+        <div class="dvd-logo">DVD</div>
+        <h1>Our Story ❤️</h1>
+        <p>Insert our disc to begin</p>
+      </div>
+
+      <video id="videoPlayer" controls playsinline></video>
+
+      <div id="menuScreen">
+        <h2>LET'S HAVE A LOOK AT OUR RELATIONSHIP ❤️</h2>
+        <div id="videoList"></div>
       </div>
     </div>
 
-    <div class="player-controls">
+    <div class="disc-area">
+      <div id="disc" class="disc" draggable="true">
+        <div class="disc-label">
+          <span>NAVI</span>
+          <b>❤️</b>
+          <span>KRISH</span>
+        </div>
+        <div class="disc-hole"></div>
+      </div>
+
+      <div id="slot" class="slot">
+        INSERT DISC
+      </div>
+    </div>
+
+    <div class="controls">
       <button id="prevBtn">⏮</button>
       <button id="playBtn">▶</button>
       <button id="nextBtn">⏭</button>
+      <button id="ejectBtn">⏏</button>
     </div>
 
-    <div class="video-title" id="videoTitle">
-      Select a memory ❤️
-    </div>
-
-    <div class="video-list" id="videoList"></div>
+    <div id="display">NO DISC</div>
 
   </div>
 
