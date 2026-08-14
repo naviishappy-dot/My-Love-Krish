@@ -11,13 +11,22 @@ const discInPlayer = document.getElementById("discInPlayer");
 
 const dvdWelcome = document.getElementById("dvdWelcome");
 const videoPlayer = document.getElementById("videoPlayer");
-
 const playerLight = document.getElementById("playerLight");
 
 const playBtn = document.getElementById("playBtn");
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
 const ejectBtn = document.getElementById("ejectBtn");
+
+const videos = [
+  "videos/video1.mp4",
+  "videos/video2.mp4",
+  "videos/video3.mp4",
+  "videos/video4.mp4"
+];
+
+let currentVideo = 0;
+let insertedDisc = null;
 
 
 /* =========================
@@ -42,21 +51,6 @@ welcomeBtn.addEventListener("click", () => {
 
 
 /* =========================
-   VIDEO FILES
-========================= */
-
-const videos = [
-  "videos/video1.mp4",
-  "videos/video2.mp4",
-  "videos/video3.mp4",
-  "videos/video4.mp4"
-];
-
-let currentVideo = 0;
-let insertedDisc = null;
-
-
-/* =========================
    INSERT DVD
 ========================= */
 
@@ -65,28 +59,59 @@ function insertDVD(dvd) {
   if (insertedDisc) return;
 
   insertedDisc = dvd;
-
   currentVideo = Number(dvd.dataset.video);
 
-  dvd.classList.add("inserted");
+  const trayBox = discTray.getBoundingClientRect();
+  const dvdBox = dvd.getBoundingClientRect();
 
-  discInPlayer.style.display = "block";
+  const targetX =
+    trayBox.left +
+    trayBox.width / 2 -
+    dvdBox.left -
+    dvdBox.width / 2;
 
-  dvdWelcome.style.display = "none";
+  const targetY =
+    trayBox.top +
+    trayBox.height / 2 -
+    dvdBox.top -
+    dvdBox.height / 2;
 
-  playerLight.classList.add("on");
+  dvd.style.transition =
+    "transform 0.7s ease, opacity 0.7s ease";
 
-  videoPlayer.src = videos[currentVideo];
+  dvd.style.transform =
+    `translate(${targetX}px, ${targetY}px) scale(0.65)`;
 
-  videoPlayer.load();
+  discTray.classList.add("disc-loading");
 
   setTimeout(() => {
 
-    videoPlayer.style.display = "block";
+    dvd.classList.add("inserted");
 
-    videoPlayer.play().catch(() => {
-      // Browser may block autoplay.
-    });
+    dvd.style.transform = "";
+
+    discInPlayer.style.display = "block";
+
+    playerLight.classList.add("on");
+
+    dvdWelcome.innerHTML = `
+      <div class="dvd-text">LOADING...</div>
+      <p>Preparing your memory ❤️</p>
+    `;
+
+    setTimeout(() => {
+
+      dvdWelcome.style.display = "none";
+
+      videoPlayer.src = videos[currentVideo];
+      videoPlayer.style.display = "block";
+      videoPlayer.load();
+
+      videoPlayer.play().catch(() => {
+        playBtn.textContent = "▶";
+      });
+
+    }, 900);
 
   }, 700);
 }
@@ -106,32 +131,45 @@ dvds.forEach((dvd) => {
 
     dvd.setPointerCapture(event.pointerId);
 
-    const originalTransform =
-      dvd.style.transform;
+    const startX = event.clientX;
+    const startY = event.clientY;
 
     let moved = false;
 
+    dvd.style.zIndex = "1000";
+    dvd.style.transition = "none";
+
     function move(event) {
 
-      moved = true;
+      const x = event.clientX - startX;
+      const y = event.clientY - startY;
 
-      dvd.style.position = "fixed";
+      if (Math.abs(x) > 5 || Math.abs(y) > 5) {
+        moved = true;
+      }
 
-      dvd.style.zIndex = "1000";
+      dvd.style.transform =
+        `translate(${x}px, ${y}px) scale(1.08)`;
 
-      dvd.style.left =
-        `${event.clientX - dvd.offsetWidth / 2}px`;
+      const trayBox =
+        discTray.getBoundingClientRect();
 
-      dvd.style.top =
-        `${event.clientY - dvd.offsetHeight / 2}px`;
+      const inside =
+        event.clientX >= trayBox.left &&
+        event.clientX <= trayBox.right &&
+        event.clientY >= trayBox.top &&
+        event.clientY <= trayBox.bottom;
 
+      if (inside) {
+        discTray.classList.add("disc-loading");
+      } else {
+        discTray.classList.remove("disc-loading");
+      }
     }
 
     function release(event) {
 
-      dvd.releasePointerCapture(
-        event.pointerId
-      );
+      dvd.releasePointerCapture(event.pointerId);
 
       dvd.removeEventListener(
         "pointermove",
@@ -143,7 +181,9 @@ dvds.forEach((dvd) => {
         release
       );
 
-      const tray =
+      discTray.classList.remove("disc-loading");
+
+      const trayBox =
         discTray.getBoundingClientRect();
 
       const dvdBox =
@@ -156,22 +196,23 @@ dvds.forEach((dvd) => {
         dvdBox.top + dvdBox.height / 2;
 
       const insideTray =
-        centerX >= tray.left &&
-        centerX <= tray.right &&
-        centerY >= tray.top &&
-        centerY <= tray.bottom;
+        centerX >= trayBox.left &&
+        centerX <= trayBox.right &&
+        centerY >= trayBox.top &&
+        centerY <= trayBox.bottom;
 
-      dvd.style.position = "";
-      dvd.style.left = "";
-      dvd.style.top = "";
       dvd.style.zIndex = "";
-
-      dvd.style.transform =
-        originalTransform;
 
       if (insideTray && moved) {
 
         insertDVD(dvd);
+
+      } else {
+
+        dvd.style.transition =
+          "transform 0.35s ease";
+
+        dvd.style.transform = "";
 
       }
     }
@@ -202,13 +243,11 @@ playBtn.addEventListener("click", () => {
   if (videoPlayer.paused) {
 
     videoPlayer.play();
-
     playBtn.textContent = "⏸";
 
   } else {
 
     videoPlayer.pause();
-
     playBtn.textContent = "▶";
 
   }
@@ -217,74 +256,7 @@ playBtn.addEventListener("click", () => {
 
 
 /* =========================
-   NEXT VIDEO
+   NEXT
 ========================= */
 
-nextBtn.addEventListener("click", () => {
-
-  if (!insertedDisc) return;
-
-  currentVideo =
-    (currentVideo + 1) % videos.length;
-
-  videoPlayer.src =
-    videos[currentVideo];
-
-  videoPlayer.load();
-
-  videoPlayer.play().catch(() => {});
-
-});
-
-
-/* =========================
-   PREVIOUS VIDEO
-========================= */
-
-prevBtn.addEventListener("click", () => {
-
-  if (!insertedDisc) return;
-
-  currentVideo =
-    (currentVideo - 1 + videos.length)
-    % videos.length;
-
-  videoPlayer.src =
-    videos[currentVideo];
-
-  videoPlayer.load();
-
-  videoPlayer.play().catch(() => {});
-
-});
-
-
-/* =========================
-   EJECT
-========================= */
-
-ejectBtn.addEventListener("click", () => {
-
-  if (!insertedDisc) return;
-
-  videoPlayer.pause();
-
-  videoPlayer.removeAttribute("src");
-
-  videoPlayer.load();
-
-  videoPlayer.style.display = "none";
-
-  dvdWelcome.style.display = "flex";
-
-  discInPlayer.style.display = "none";
-
-  playerLight.classList.remove("on");
-
-  insertedDisc.classList.remove("inserted");
-
-  insertedDisc = null;
-
-  playBtn.textContent = "▶";
-
-});
+nextBtn.addEventListener("click", () =>
