@@ -1,152 +1,22 @@
-const disc = document.getElementById("disc");
-const slot = document.getElementById("slot");
+const page1 = document.getElementById("page1");
+const page2 = document.getElementById("page2");
+const page3 = document.getElementById("page3");
 
-const welcomeScreen = document.getElementById("welcomeScreen");
-const menuScreen = document.getElementById("menuScreen");
-const videoPlayer = document.getElementById("videoPlayer");
-const videoList = document.getElementById("videoList");
+const relationshipBtn = document.getElementById("relationshipBtn");
+const welcomeBtn = document.getElementById("welcomeBtn");
 
-const playBtn = document.getElementById("playBtn");
-const prevBtn = document.getElementById("prevBtn");
-const nextBtn = document.getElementById("nextBtn");
-const ejectBtn = document.getElementById("ejectBtn");
-const display = document.getElementById("display");
+function showPage(pageToShow) {
+  page1.classList.remove("active");
+  page2.classList.remove("active");
+  page3.classList.remove("active");
 
-const videos = [
-  {
-    title: "Memory 01 ❤️",
-    src: "videos/video1.mp4"
-  },
-  {
-    title: "Memory 02 🥹",
-    src: "videos/video2.mp4"
-  },
-  {
-    title: "Memory 03 ❤️",
-    src: "videos/video3.mp4"
-  }
-];
-
-let discInserted = false;
-let currentVideo = 0;
-
-function insertDisc() {
-  if (discInserted) return;
-
-  discInserted = true;
-
-  disc.classList.add("inserted");
-  slot.textContent = "DISC INSERTED";
-  display.textContent = "READING DISC...";
-
-  setTimeout(() => {
-    welcomeScreen.style.display = "none";
-    menuScreen.style.display = "flex";
-    display.textContent = "NAVI × KRISH — READY";
-    createVideoButtons();
-  }, 1200);
+  pageToShow.classList.add("active");
 }
 
-/* PHONE: TAP DISC */
-disc.addEventListener("click", insertDisc);
-
-/* COMPUTER: DRAG DISC */
-disc.addEventListener("dragstart", (event) => {
-  event.dataTransfer.setData("text/plain", "disc");
+relationshipBtn.addEventListener("click", () => {
+  showPage(page2);
 });
 
-slot.addEventListener("dragover", (event) => {
-  event.preventDefault();
-  slot.classList.add("over");
-});
-
-slot.addEventListener("dragleave", () => {
-  slot.classList.remove("over");
-});
-
-slot.addEventListener("drop", (event) => {
-  event.preventDefault();
-  slot.classList.remove("over");
-  insertDisc();
-});
-
-function createVideoButtons() {
-  videoList.innerHTML = "";
-
-  videos.forEach((video, index) => {
-    const button = document.createElement("button");
-
-    button.className = "video-item";
-    button.textContent = video.title;
-
-    button.addEventListener("click", () => {
-      loadVideo(index);
-    });
-
-    videoList.appendChild(button);
-  });
-}
-
-function loadVideo(index) {
-  if (!discInserted) return;
-
-  currentVideo = index;
-
-  menuScreen.style.display = "none";
-  videoPlayer.style.display = "block";
-
-  videoPlayer.src = videos[index].src;
-  videoPlayer.load();
-
-  display.textContent = videos[index].title;
-}
-
-playBtn.addEventListener("click", () => {
-  if (!discInserted) return;
-
-  if (!videoPlayer.src) {
-    loadVideo(currentVideo);
-  }
-
-  if (videoPlayer.paused) {
-    videoPlayer.play();
-    playBtn.textContent = "⏸";
-  } else {
-    videoPlayer.pause();
-    playBtn.textContent = "▶";
-  }
-});
-
-nextBtn.addEventListener("click", () => {
-  if (!discInserted) return;
-
-  currentVideo = (currentVideo + 1) % videos.length;
-  loadVideo(currentVideo);
-});
-
-prevBtn.addEventListener("click", () => {
-  if (!discInserted) return;
-
-  currentVideo = (currentVideo - 1 + videos.length) % videos.length;
-  loadVideo(currentVideo);
-});
-
-ejectBtn.addEventListener("click", () => {
-  if (!discInserted) return;
-
-  videoPlayer.pause();
-  videoPlayer.removeAttribute("src");
-  videoPlayer.load();
-
-  videoPlayer.style.display = "none";
-  menuScreen.style.display = "none";
-  welcomeScreen.style.display = "flex";
-
-  disc.classList.remove("inserted");
-
-  slot.textContent = "INSERT DISC";
-  display.textContent = "NO DISC";
-
-  playBtn.textContent = "▶";
-  discInserted = false;
+welcomeBtn.addEventListener("click", () => {
+  showPage(page3);
 });
