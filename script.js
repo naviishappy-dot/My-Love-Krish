@@ -10,7 +10,6 @@ const playBtn = document.getElementById("playBtn");
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
 const ejectBtn = document.getElementById("ejectBtn");
-
 const display = document.getElementById("display");
 
 const videos = [
@@ -31,24 +30,34 @@ const videos = [
 let discInserted = false;
 let currentVideo = 0;
 
-
-/* -----------------------------
-   DRAG DISC
------------------------------ */
-
-disc.addEventListener("dragstart", (event) => {
+function insertDisc() {
   if (discInserted) return;
 
+  discInserted = true;
+
+  disc.classList.add("inserted");
+  slot.textContent = "DISC INSERTED";
+  display.textContent = "READING DISC...";
+
+  setTimeout(() => {
+    welcomeScreen.style.display = "none";
+    menuScreen.style.display = "flex";
+    display.textContent = "NAVI × KRISH — READY";
+    createVideoButtons();
+  }, 1200);
+}
+
+/* PHONE: TAP DISC */
+disc.addEventListener("click", insertDisc);
+
+/* COMPUTER: DRAG DISC */
+disc.addEventListener("dragstart", (event) => {
   event.dataTransfer.setData("text/plain", "disc");
-  display.textContent = "INSERT DISC";
 });
 
 slot.addEventListener("dragover", (event) => {
   event.preventDefault();
-
-  if (!discInserted) {
-    slot.classList.add("over");
-  }
+  slot.classList.add("over");
 });
 
 slot.addEventListener("dragleave", () => {
@@ -57,53 +66,9 @@ slot.addEventListener("dragleave", () => {
 
 slot.addEventListener("drop", (event) => {
   event.preventDefault();
-
   slot.classList.remove("over");
-
-  if (discInserted) return;
-
   insertDisc();
 });
-
-
-/* -----------------------------
-   MOBILE / TOUCH DISC INSERT
------------------------------ */
-
-disc.addEventListener("click", () => {
-  if (!discInserted) {
-    insertDisc();
-  }
-});
-
-
-/* -----------------------------
-   INSERT DISC
------------------------------ */
-
-function insertDisc() {
-  discInserted = true;
-
-  disc.classList.add("inserted");
-
-  slot.textContent = "DISC INSERTED";
-
-  display.textContent = "READING DISC...";
-
-  setTimeout(() => {
-    welcomeScreen.style.display = "none";
-    menuScreen.style.display = "flex";
-
-    display.textContent = "NAVI × KRISH — READY";
-
-    createVideoButtons();
-  }, 1200);
-}
-
-
-/* -----------------------------
-   CREATE VIDEO MENU
------------------------------ */
 
 function createVideoButtons() {
   videoList.innerHTML = "";
@@ -122,11 +87,6 @@ function createVideoButtons() {
   });
 }
 
-
-/* -----------------------------
-   LOAD VIDEO
------------------------------ */
-
 function loadVideo(index) {
   if (!discInserted) return;
 
@@ -139,6 +99,54 @@ function loadVideo(index) {
   videoPlayer.load();
 
   display.textContent = videos[index].title;
+}
 
-  document.querySelectorAll(".video-item").forEach((button, i) => {
-    button.classList
+playBtn.addEventListener("click", () => {
+  if (!discInserted) return;
+
+  if (!videoPlayer.src) {
+    loadVideo(currentVideo);
+  }
+
+  if (videoPlayer.paused) {
+    videoPlayer.play();
+    playBtn.textContent = "⏸";
+  } else {
+    videoPlayer.pause();
+    playBtn.textContent = "▶";
+  }
+});
+
+nextBtn.addEventListener("click", () => {
+  if (!discInserted) return;
+
+  currentVideo = (currentVideo + 1) % videos.length;
+  loadVideo(currentVideo);
+});
+
+prevBtn.addEventListener("click", () => {
+  if (!discInserted) return;
+
+  currentVideo = (currentVideo - 1 + videos.length) % videos.length;
+  loadVideo(currentVideo);
+});
+
+ejectBtn.addEventListener("click", () => {
+  if (!discInserted) return;
+
+  videoPlayer.pause();
+  videoPlayer.removeAttribute("src");
+  videoPlayer.load();
+
+  videoPlayer.style.display = "none";
+  menuScreen.style.display = "none";
+  welcomeScreen.style.display = "flex";
+
+  disc.classList.remove("inserted");
+
+  slot.textContent = "INSERT DISC";
+  display.textContent = "NO DISC";
+
+  playBtn.textContent = "▶";
+  discInserted = false;
+});
