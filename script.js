@@ -1,9 +1,6 @@
-const page1 = document.getElementById("page1");
-const page2 = document.getElementById("page2");
-const page3 = document.getElementById("page3");
-
-const relationshipBtn = document.getElementById("relationshipBtn");
-const welcomeBtn = document.getElementById("welcomeBtn");
+/* =========================
+   ELEMENTS
+========================= */
 
 const dvds = document.querySelectorAll(".dvd");
 
@@ -21,7 +18,7 @@ const ejectBtn = document.getElementById("ejectBtn");
 
 
 /* =========================
-   YOUR VIDEOS
+   VIDEO FILES
 ========================= */
 
 const videos = [
@@ -32,53 +29,27 @@ const videos = [
 ];
 
 
+/* =========================
+   STATE
+========================= */
+
 let insertedDisc = null;
 let currentVideo = 0;
 let dragging = false;
 
 
 /* =========================
-   PAGE NAVIGATION
+   DVD DRAG
 ========================= */
 
-function showPage(page) {
-
-  if (!page) return;
-
-  if (page1) page1.classList.remove("active");
-  if (page2) page2.classList.remove("active");
-  if (page3) page3.classList.remove("active");
-
-  page.classList.add("active");
-}
-
-
-if (relationshipBtn) {
-  relationshipBtn.addEventListener("click", function () {
-    showPage(page2);
-  });
-}
-
-
-if (welcomeBtn) {
-  welcomeBtn.addEventListener("click", function () {
-    showPage(page3);
-  });
-}
-
-
-/* =========================
-   DVD DRAGGING
-========================= */
-
-dvds.forEach(function (dvd) {
+dvds.forEach((dvd) => {
 
   let startX = 0;
   let startY = 0;
 
-  dvd.addEventListener("pointerdown", function (event) {
+  dvd.addEventListener("pointerdown", (event) => {
 
-    if (insertedDisc || dragging || !discTray) return;
+    if (insertedDisc || dragging) return;
 
     event.preventDefault();
 
@@ -99,22 +70,29 @@ dvds.forEach(function (dvd) {
   });
 
 
-  dvd.addEventListener("pointermove", function (event) {
+  dvd.addEventListener("pointermove", (event) => {
 
-    if (!dragging || !discTray) return;
+    if (!dragging) return;
 
     event.preventDefault();
 
-    const x = event.clientX - startX;
-    const y = event.clientY - startY;
+    const x =
+      event.clientX - startX;
+
+    const y =
+      event.clientY - startY;
+
 
     dvd.style.transform =
       `translate(${x}px, ${y}px) scale(1.08)`;
 
 
-    /* Check if DVD is over tray */
+    if (!discTray) return;
 
-    const tray = discTray.getBoundingClientRect();
+
+    const tray =
+      discTray.getBoundingClientRect();
+
 
     const insideTray =
       event.clientX >= tray.left &&
@@ -125,33 +103,39 @@ dvds.forEach(function (dvd) {
 
     if (insideTray) {
 
-      discTray.classList.add("disc-loading");
+      discTray.classList.add(
+        "disc-loading"
+      );
 
     } else {
 
-      discTray.classList.remove("disc-loading");
+      discTray.classList.remove(
+        "disc-loading"
+      );
 
     }
 
   });
 
 
-  dvd.addEventListener("pointerup", function (event) {
+  dvd.addEventListener("pointerup", (event) => {
 
     if (!dragging) return;
 
     dragging = false;
 
+
     if (!discTray) {
 
-      dvd.style.transform = "";
-      dvd.style.zIndex = "";
-
+      resetDVD(dvd);
       return;
+
     }
 
 
-    const tray = discTray.getBoundingClientRect();
+    const tray =
+      discTray.getBoundingClientRect();
+
 
     const insideTray =
       event.clientX >= tray.left &&
@@ -160,11 +144,15 @@ dvds.forEach(function (dvd) {
       event.clientY <= tray.bottom;
 
 
-    discTray.classList.remove("disc-loading");
+    discTray.classList.remove(
+      "disc-loading"
+    );
 
 
     try {
-      dvd.releasePointerCapture(event.pointerId);
+      dvd.releasePointerCapture(
+        event.pointerId
+      );
     } catch (error) {}
 
 
@@ -174,12 +162,7 @@ dvds.forEach(function (dvd) {
 
     } else {
 
-      dvd.style.transition =
-        "transform 0.35s ease";
-
-      dvd.style.transform = "";
-
-      dvd.style.zIndex = "";
+      resetDVD(dvd);
 
     }
 
@@ -189,12 +172,31 @@ dvds.forEach(function (dvd) {
 
 
 /* =========================
+   RESET DVD POSITION
+========================= */
+
+function resetDVD(dvd) {
+
+  dvd.style.transition =
+    "transform 0.35s ease";
+
+  dvd.style.transform = "";
+
+  dvd.style.zIndex = "";
+
+}
+
+
+/* =========================
    INSERT DVD
 ========================= */
 
 function insertDVD(dvd) {
 
-  if (insertedDisc || !discTray) return;
+  if (insertedDisc) return;
+
+  if (!discTray) return;
+
 
   insertedDisc = dvd;
 
@@ -202,7 +204,7 @@ function insertDVD(dvd) {
     Number(dvd.dataset.video || 0);
 
 
-  /* Find DVD and tray positions */
+  /* DVD position */
 
   const dvdRect =
     dvd.getBoundingClientRect();
@@ -237,8 +239,7 @@ function insertDVD(dvd) {
 
 
   /* =========================
-     ANIMATION 1
-     DVD flies to player
+     1. DVD MOVES TO TRAY
   ========================= */
 
   dvd.style.transition =
@@ -249,23 +250,21 @@ function insertDVD(dvd) {
 
 
   /* =========================
-     ANIMATION 2
-     TRAY OPENS
+     2. TRAY OPENS
   ========================= */
 
-  setTimeout(function () {
+  setTimeout(() => {
 
     discTray.classList.add("open");
 
-  }, 600);
+  }, 650);
 
 
   /* =========================
-     ANIMATION 3
-     DISC ENTERS PLAYER
+     3. DISC GOES INSIDE
   ========================= */
 
-  setTimeout(function () {
+  setTimeout(() => {
 
     dvd.style.opacity = "0";
 
@@ -277,3 +276,320 @@ function insertDVD(dvd) {
     }
 
     discTray.classList.add(
+      "disc-inserted"
+    );
+
+
+    if (playerLight) {
+
+      playerLight.classList.add("on");
+
+    }
+
+  }, 1100);
+
+
+  /* =========================
+     4. TRAY CLOSES
+  ========================= */
+
+  setTimeout(() => {
+
+    discTray.classList.remove(
+      "open"
+    );
+
+  }, 1900);
+
+
+  /* =========================
+     5. LOADING
+  ========================= */
+
+  setTimeout(() => {
+
+    if (!dvdWelcome) return;
+
+    dvdWelcome.innerHTML = `
+      <div class="dvd-text">
+        LOADING...
+      </div>
+
+      <p>
+        Preparing your memory ❤️
+      </p>
+    `;
+
+    dvdWelcome.style.display =
+      "flex";
+
+  }, 2100);
+
+
+  /* =========================
+     6. PLAY VIDEO
+  ========================= */
+
+  setTimeout(() => {
+
+    if (!videoPlayer) return;
+
+
+    if (dvdWelcome) {
+
+      dvdWelcome.style.display =
+        "none";
+
+    }
+
+
+    videoPlayer.src =
+      videos[currentVideo];
+
+    videoPlayer.style.display =
+      "block";
+
+    videoPlayer.load();
+
+
+    videoPlayer.play().catch(() => {
+
+      if (playBtn) {
+
+        playBtn.textContent = "▶";
+
+      }
+
+    });
+
+  }, 3000);
+
+}
+
+
+/* =========================
+   PLAY / PAUSE
+========================= */
+
+if (playBtn) {
+
+  playBtn.addEventListener(
+    "click",
+    () => {
+
+      if (!insertedDisc) return;
+
+      if (!videoPlayer) return;
+
+
+      if (videoPlayer.paused) {
+
+        videoPlayer.play();
+
+        playBtn.textContent =
+          "⏸";
+
+      } else {
+
+        videoPlayer.pause();
+
+        playBtn.textContent =
+          "▶";
+
+      }
+
+    }
+  );
+
+}
+
+
+/* =========================
+   NEXT VIDEO
+========================= */
+
+if (nextBtn) {
+
+  nextBtn.addEventListener(
+    "click",
+    () => {
+
+      if (!insertedDisc) return;
+
+      if (!videoPlayer) return;
+
+
+      currentVideo =
+        (currentVideo + 1) %
+        videos.length;
+
+
+      videoPlayer.src =
+        videos[currentVideo];
+
+      videoPlayer.load();
+
+      videoPlayer.play().catch(
+        () => {}
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================
+   PREVIOUS VIDEO
+========================= */
+
+if (prevBtn) {
+
+  prevBtn.addEventListener(
+    "click",
+    () => {
+
+      if (!insertedDisc) return;
+
+      if (!videoPlayer) return;
+
+
+      currentVideo =
+        (currentVideo - 1 +
+          videos.length) %
+        videos.length;
+
+
+      videoPlayer.src =
+        videos[currentVideo];
+
+      videoPlayer.load();
+
+      videoPlayer.play().catch(
+        () => {}
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================
+   EJECT
+========================= */
+
+if (ejectBtn) {
+
+  ejectBtn.addEventListener(
+    "click",
+    () => {
+
+      if (!insertedDisc) return;
+
+
+      /* Stop video */
+
+      if (videoPlayer) {
+
+        videoPlayer.pause();
+
+        videoPlayer.removeAttribute(
+          "src"
+        );
+
+        videoPlayer.load();
+
+        videoPlayer.style.display =
+          "none";
+
+      }
+
+
+      /* Reset welcome */
+
+      if (dvdWelcome) {
+
+        dvdWelcome.innerHTML = `
+          <div class="dvd-text">
+            DVD
+          </div>
+
+          <p>
+            Please insert a disc
+          </p>
+        `;
+
+        dvdWelcome.style.display =
+          "flex";
+
+      }
+
+
+      /* Reset tray */
+
+      if (discTray) {
+
+        discTray.classList.remove(
+          "open"
+        );
+
+        discTray.classList.remove(
+          "disc-inserted"
+        );
+
+      }
+
+
+      /* Hide inserted disc */
+
+      if (discInPlayer) {
+
+        discInPlayer.style.display =
+          "none";
+
+      }
+
+
+      /* Turn light off */
+
+      if (playerLight) {
+
+        playerLight.classList.remove(
+          "on"
+        );
+
+      }
+
+
+      /* Return DVD */
+
+      insertedDisc.style.opacity =
+        "1";
+
+      insertedDisc.style.transition =
+        "transform 0.5s ease";
+
+      insertedDisc.style.transform =
+        "";
+
+      insertedDisc.style.zIndex =
+        "";
+
+
+      insertedDisc = null;
+
+      currentVideo = 0;
+
+
+      if (playBtn) {
+
+        playBtn.textContent =
+          "▶";
+
+      }
+
+    }
+  );
+
+  }
