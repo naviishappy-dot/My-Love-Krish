@@ -43,12 +43,149 @@
   <!-- PAGE 3 -->
   <section id="page3" class="page">
 
-    <h2>Our Little DVD Collection 💿</h2>
+    <h2>Our Little Memories 💿</h2>
 
     <p>Drag a DVD into the player</p>
 
-    <div class="dvd-placeholder">
-      DVD PLAYER
+
+    <!-- WOODEN DVD PLAYER -->
+
+    <div class="dvd-player">
+
+      <div class="player-top">
+
+        <div class="player-brand">
+          Navi ❤️ Krish
+        </div>
+
+        <div id="playerLight" class="player-light"></div>
+
+      </div>
+
+
+      <!-- SCREEN -->
+
+      <div class="dvd-screen">
+
+        <div id="dvdWelcome">
+
+          <div class="dvd-text">
+            DVD
+          </div>
+
+          <p>
+            Please insert a disc
+          </p>
+
+        </div>
+
+        <video
+          id="videoPlayer"
+          controls
+          playsinline>
+        </video>
+
+      </div>
+
+
+      <!-- CONTROLS -->
+
+      <div class="player-controls">
+
+        <button id="prevBtn">
+          ⏮
+        </button>
+
+        <button id="playBtn">
+          ▶
+        </button>
+
+        <button id="nextBtn">
+          ⏭
+        </button>
+
+        <button id="ejectBtn">
+          ⏏
+        </button>
+
+      </div>
+
+
+      <!-- DISC TRAY -->
+
+      <div class="disc-tray">
+
+        <div class="disc-slot"></div>
+
+        <div
+          id="discInPlayer"
+          class="disc-in-player">
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- DVDS -->
+
+    <div class="discs">
+
+      <div
+        class="dvd"
+        data-video="0"
+        draggable="true">
+
+        <div class="dvd-label">
+          Our<br>Story
+        </div>
+
+        <div class="dvd-hole"></div>
+
+      </div>
+
+
+      <div
+        class="dvd"
+        data-video="1"
+        draggable="true">
+
+        <div class="dvd-label">
+          Memory<br>02
+        </div>
+
+        <div class="dvd-hole"></div>
+
+      </div>
+
+
+      <div
+        class="dvd"
+        data-video="2"
+        draggable="true">
+
+        <div class="dvd-label">
+          Memory<br>03
+        </div>
+
+        <div class="dvd-hole"></div>
+
+      </div>
+
+
+      <div
+        class="dvd"
+        data-video="3"
+        draggable="true">
+
+        <div class="dvd-label">
+          Memory<br>04
+        </div>
+
+        <div class="dvd-hole"></div>
+
+      </div>
+
     </div>
 
   </section>
