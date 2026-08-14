@@ -452,3 +452,128 @@ body {
 .disc-tray.disc-loading .disc-slot {
   background: #17100b;
   }
+/* =========================
+   REAL DVD TRAY ANIMATION
+========================= */
+
+.disc-tray {
+  position: relative;
+  height: 72px;
+  margin-top: 18px;
+  background: #21140c;
+  border-radius: 10px;
+  border: 3px solid #4d321f;
+  overflow: visible;
+  perspective: 500px;
+}
+
+.tray-inside {
+  position: absolute;
+  width: 82%;
+  height: 48px;
+  left: 9%;
+  top: 10px;
+  background: #080604;
+  border-radius: 5px;
+  border: 2px solid #60432b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.tray-door {
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background: linear-gradient(
+    180deg,
+    #714626,
+    #4b2b19
+  );
+  border-radius: 7px;
+  border: 2px solid #8b5b38;
+  transform-origin: top;
+  transition:
+    transform 0.55s ease,
+    opacity 0.35s ease;
+}
+
+/* tray opening */
+
+.disc-tray.open .tray-door {
+  transform:
+    perspective(400px)
+    rotateX(-78deg)
+    translateY(-18px);
+
+  opacity: 0.15;
+}
+
+/* actual disc inside */
+
+.disc-in-player {
+  position: absolute;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+
+  background:
+    repeating-radial-gradient(
+      circle,
+      #555 0px,
+      #555 2px,
+      #111 3px,
+      #555 4px
+    );
+
+  border: 3px solid #aaa;
+
+  top: 50%;
+  left: 50%;
+
+  transform:
+    translate(-50%, -50%)
+    scale(0.15);
+
+  opacity: 0;
+
+  transition:
+    transform 0.7s cubic-bezier(.2,.8,.2,1),
+    opacity 0.35s ease;
+
+  z-index: 5;
+}
+
+/* disc has entered */
+
+.disc-tray.disc-inserted
+.disc-in-player {
+
+  opacity: 1;
+
+  transform:
+    translate(-50%, -50%)
+    scale(1);
+}
+
+
+/* cute glowing tray */
+
+.disc-tray.disc-loading {
+  box-shadow:
+    0 0 10px rgba(231,165,184,.35),
+    0 0 25px rgba(231,165,184,.25);
+}
+
+
+/* DVD player light */
+
+.player-light.on {
+  box-shadow:
+    0 0 5px #ff5268,
+    0 0 15px #ff5268;
+}
