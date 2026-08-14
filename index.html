@@ -3,59 +3,56 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Navi ❤️ Krish</title>
+  <title>For Krish ❤️</title>
+
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <div class="dvd-player">
+  <!-- PAGE 1 -->
+  <section id="page1" class="page active">
 
-    <div class="dvd-top">
-      <div class="brand">NAVI × KRISH</div>
-      <div class="power-light"></div>
+    <div class="heart">♡</div>
+
+    <h1>Hii Krish</h1>
+
+    <p>I love you</p>
+
+    <button id="relationshipBtn">
+      Let's have a look on our relationship
+    </button>
+
+  </section>
+
+
+  <!-- PAGE 2 -->
+  <section id="page2" class="page">
+
+    <div class="photo-placeholder">
+      Our picture will be here ❤️
     </div>
 
-    <div class="screen">
-      <div id="welcomeScreen">
-        <div class="dvd-logo">DVD</div>
-        <h1>Our Story ❤️</h1>
-        <p>Insert our disc to begin</p>
-      </div>
+    <button id="welcomeBtn">
+      Welcome my love
+    </button>
 
-      <video id="videoPlayer" controls playsinline></video>
+  </section>
 
-      <div id="menuScreen">
-        <h2>LET'S HAVE A LOOK AT OUR RELATIONSHIP ❤️</h2>
-        <div id="videoList"></div>
-      </div>
+
+  <!-- PAGE 3 -->
+  <section id="page3" class="page">
+
+    <h2>Our Little DVD Collection 💿</h2>
+
+    <p>Drag a DVD into the player</p>
+
+    <div class="dvd-placeholder">
+      DVD PLAYER
     </div>
 
-    <div class="disc-area">
-      <div id="disc" class="disc" draggable="true">
-        <div class="disc-label">
-          <span>NAVI</span>
-          <b>❤️</b>
-          <span>KRISH</span>
-        </div>
-        <div class="disc-hole"></div>
-      </div>
+  </section>
 
-      <div id="slot" class="slot">
-        INSERT DISC
-      </div>
-    </div>
-
-    <div class="controls">
-      <button id="prevBtn">⏮</button>
-      <button id="playBtn">▶</button>
-      <button id="nextBtn">⏭</button>
-      <button id="ejectBtn">⏏</button>
-    </div>
-
-    <div id="display">NO DISC</div>
-
-  </div>
 
   <script src="script.js"></script>
 
