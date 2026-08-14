@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Playfair+Display:wght@500;600&display=swap');
+2@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Playfair+Display:wght@500;600&display=swap');
 
 * {
   box-sizing: border-box;
@@ -843,3 +843,45 @@ body {
 .dvd:active {
   cursor: grabbing;
 }
+/* =========================
+   PAGE 2 PHOTO FIX
+========================= */
+
+#page2 {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+}
+
+#page2 .photo-placeholder {
+  width: min(85vw, 420px);
+  height: min(60vh, 500px);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  overflow: hidden;
+
+  margin: 0 auto;
+}
+
+#page2 .photo-placeholder img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+  object-position: center;
+
+  display: block;
+}
+
+#page2 #welcomeBtn {
+  position: relative;
+  z-index: 10;
+
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+
